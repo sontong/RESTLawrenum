@@ -32,6 +32,8 @@ public class ApplicationConfig extends Application {
         resources.add(lawrenum.service.CommentFacadeREST.class);
         resources.add(lawrenum.service.EventFacadeREST.class);
         resources.add(lawrenum.service.ForumFacadeREST.class);
+        resources.add(lawrenum.service.HandleCommentFacadeREST.class);
+        resources.add(lawrenum.service.HandlePostFacadeREST.class);
         resources.add(lawrenum.service.MembershipFacadeREST.class);
         resources.add(lawrenum.service.PostFacadeREST.class);
         resources.add(lawrenum.service.ReportFacadeREST.class);

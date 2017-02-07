@@ -58,7 +58,7 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "graduation_year")
-    private String graduationYear;
+    private Integer graduationYear;
 
     public User() {
     }
@@ -115,19 +115,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getGraduationYear() {
+    public Integer getGraduationYear() {
         return graduationYear;
     }
 
-    public void setGraduationYear(String graduationYear) {
+    public void setGraduationYear(Integer graduationYear) {
         this.graduationYear = graduationYear;
-    }
-    
-    public String toJSONString() {
-        String jsonStr = "{\"iduser\":\"" + iduser + "\", \"username\":\"" + username + "\", \"password\":\"" + password + "\", "
-                + "\"type\":\"" + type + "\", \"fullname\":\"" + fullname + "\", \"email\":\"" + email + "\", "
-                + "\"graduation_year\":\"" + graduationYear + "\"}";
-        return jsonStr;
     }
 
     @Override

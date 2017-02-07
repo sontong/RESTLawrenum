@@ -17,7 +17,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import lawrenum.Post;
 import lawrenum.User;
 
 /**
@@ -36,19 +35,19 @@ public class UserFacadeREST extends AbstractFacade<User> {
     }
     
     @GET
-    @Produces({"text/plain"})
-    public String checkUser(@QueryParam("user") String user, @QueryParam("password") String password) {
+    @Produces({"application/json"})
+    public User checkUser(@QueryParam("user") String user, @QueryParam("password") String password) {
         User u = null;
         try {
             u = em.createNamedQuery("User.findByUsername", User.class).setParameter("username", user).getSingleResult();
         } catch (Exception ex) {
-            return "0";
+            return null;
         }
         if (u.getPassword().equals(password)) {
 //            return u.getIduser().toString();
-            return u.toJSONString();
+            return super.find(u.getIduser());
         } else {
-            return "0";
+            return null;
         }
     }
 
@@ -58,7 +57,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public String findId(@QueryParam("user") String user) {
         User u = null;
         try {
-            u = em.createNamedQuery("User.findByName", User.class).setParameter("username", user).getSingleResult();
+            u = em.createNamedQuery("User.findByUsername", User.class).setParameter("username", user).getSingleResult();
         } catch (Exception ex) {
             return "0";
         }
@@ -67,7 +66,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     
     @POST
     @Consumes({"application/json"})
-    public String createUser(User entity) {
+    @Produces({"application/json"})
+    public User createUser(User entity) {
         // First check that no user with this name is already in the system
         User other = null;
         try {
@@ -76,12 +76,12 @@ public class UserFacadeREST extends AbstractFacade<User> {
            
         }
         if(other != null)
-            return "0";
+            return null;
                 
         super.create(entity);
         em.flush();
-        return entity.toJSONString();
-        // return entity.getIduser().toString();
+        return entity;
+//        return entity.getIduser().toString();
     }
     
     @PUT

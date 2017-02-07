@@ -5,6 +5,7 @@
  */
 package lawrenum.service;
 
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +18,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import lawrenum.Report;
 
 /**
@@ -35,16 +35,24 @@ public class ReportFacadeREST extends AbstractFacade<Report> {
         super(Report.class);
     }
 
+    @GET    
+    @Produces({"application/json"})
+    public List<Report> findAll() {
+        return super.findAll();
+    }
+    
     @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Report entity) {
+    @Consumes({"application/json"})
+    public String createPost(Report entity) {
+        entity.setTime(Calendar.getInstance().getTime());
         super.create(entity);
+        em.flush();
+        return entity.getIdreport().toString();
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({"application/json"})
     public void edit(@PathParam("id") Integer id, Report entity) {
         super.edit(entity);
     }
@@ -53,34 +61,6 @@ public class ReportFacadeREST extends AbstractFacade<Report> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Report find(@PathParam("id") Integer id) {
-        return super.find(id);
-    }
-
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Report> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Report> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
     }
 
     @Override
