@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HandlePost.findByTitle", query = "SELECT h FROM HandlePost h WHERE h.title = :title"),
     @NamedQuery(name = "HandlePost.findByTag", query = "SELECT h FROM HandlePost h WHERE h.tag = :tag"),
     @NamedQuery(name = "HandlePost.findByTime", query = "SELECT h FROM HandlePost h WHERE h.time = :time"),
-    @NamedQuery(name = "HandlePost.findByFullname", query = "SELECT h FROM HandlePost h WHERE h.fullname = :fullname")})
+    @NamedQuery(name = "HandlePost.findByFullname", query = "SELECT h FROM HandlePost h WHERE h.fullname = :fullname"),
+    @NamedQuery(name = "HandlePost.findBySticky", query = "SELECT h FROM HandlePost h WHERE h.sticky = :sticky")})
 public class HandlePost implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,6 +72,8 @@ public class HandlePost implements Serializable {
     @Size(max = 45)
     @Column(name = "fullname")
     private String fullname;
+    @Column(name = "sticky")
+    private Integer sticky;
 
     public HandlePost() {
     }
@@ -137,6 +140,14 @@ public class HandlePost implements Serializable {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public Integer getSticky() {
+        return sticky;
+    }
+
+    public void setSticky(Integer sticky) {
+        this.sticky = sticky;
     }
     
 }

@@ -43,11 +43,20 @@ public class PostFacadeREST extends AbstractFacade<Post>{
         return super.find(id);
     }       
     
+//    @GET
+//    @Path("idforum")
+//    @Produces({"application/json"})
+//    public List<Post> findByIdforum(@QueryParam("idforum") int idforum) {
+//        return em.createNamedQuery("Post.findByIdforum", Post.class).setParameter("idforum", idforum).getResultList();
+//    }
+    
     @GET
     @Path("idforum")
     @Produces({"application/json"})
     public List<Post> findByIdforum(@QueryParam("idforum") int idforum) {
-        return em.createNamedQuery("Post.findByIdforum", Post.class).setParameter("idforum", idforum).getResultList();
+        //return em.createNamedQuery("Post.findByIdforum", Post.class).setParameter("idforum", idforum).getResultList();
+        String query = "SELECT p FROM Post p WHERE p.idforum = "+idforum+" ORDER BY p.sticky DESC";
+        return em.createQuery(query).getResultList();
     }
     
     @GET
@@ -72,6 +81,14 @@ public class PostFacadeREST extends AbstractFacade<Post>{
     @Consumes({"application/json"})
     public void edit(@PathParam("id") Integer id, Post entity) {
         super.edit(entity);
+    }
+    
+    @PUT
+    @Path("sticky/{id}")     
+    @Consumes({"application/json"})
+    public void makeSticky(@PathParam("id") Integer id) {
+        String query = "UPDATE Post p SET p.sticky = 1 WHERE p.idpost = "+id;
+        em.createQuery(query).executeUpdate();
     }
 
     @DELETE

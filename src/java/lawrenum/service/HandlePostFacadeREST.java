@@ -42,12 +42,21 @@ public class HandlePostFacadeREST extends AbstractFacade<HandlePost> {
         return super.find(id);
     }       
     
+//    @GET
+//    @Path("idforum")
+//    @Produces({"application/json"})
+//    public List<HandlePost> findByIdforum(@QueryParam("idforum") int idforum) {
+//        return em.createNamedQuery("HandlePost.findByIdforum", HandlePost.class).setParameter("idforum", idforum).getResultList();
+//    }
+    
     @GET
     @Path("idforum")
     @Produces({"application/json"})
-    public List<HandlePost> findByIdforum(@QueryParam("idforum") int idforum) {
-        return em.createNamedQuery("HandlePost.findByIdforum", HandlePost.class).setParameter("idforum", idforum).getResultList();
+    public List<HandlePost> findByIdforum(@QueryParam("idforum") int idforum) {        
+        String query = "SELECT p FROM HandlePost p WHERE p.idforum = "+idforum+" ORDER BY p.sticky DESC";
+        return em.createQuery(query).getResultList();
     }
+    
     
     @GET
     @Path("tag")

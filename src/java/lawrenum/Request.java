@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Request.findByIdrequest", query = "SELECT r FROM Request r WHERE r.idrequest = :idrequest"),
     @NamedQuery(name = "Request.findByIduser", query = "SELECT r FROM Request r WHERE r.iduser = :iduser"),
     @NamedQuery(name = "Request.findByRequestType", query = "SELECT r FROM Request r WHERE r.requestType = :requestType"),
+    @NamedQuery(name = "Request.findByTitle", query = "SELECT r FROM Request r WHERE r.title = :title"),
     @NamedQuery(name = "Request.findByTime", query = "SELECT r FROM Request r WHERE r.time = :time")})
 public class Request implements Serializable {
 
@@ -50,6 +51,9 @@ public class Request implements Serializable {
     private int iduser;
     @Column(name = "request_type")
     private Integer requestType;
+    @Size(max = 256)
+    @Column(name = "title")
+    private String title;
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
@@ -92,6 +96,14 @@ public class Request implements Serializable {
 
     public void setRequestType(Integer requestType) {
         this.requestType = requestType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
