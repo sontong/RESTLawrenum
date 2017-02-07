@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Post.findByIdforum", query = "SELECT p FROM Post p WHERE p.idforum = :idforum"),
     @NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post p WHERE p.title = :title"),
     @NamedQuery(name = "Post.findByTag", query = "SELECT p FROM Post p WHERE p.tag = :tag"),
-    @NamedQuery(name = "Post.findByTime", query = "SELECT p FROM Post p WHERE p.time = :time")})
+    @NamedQuery(name = "Post.findByTime", query = "SELECT p FROM Post p WHERE p.time = :time"),
+    @NamedQuery(name = "Post.findByPopularity", query = "SELECT p FROM Post p WHERE p.popularity = :popularity")})
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,6 +68,8 @@ public class Post implements Serializable {
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
+    @Column(name = "popularity")
+    private Integer popularity;
 
     public Post() {
     }
@@ -135,6 +138,14 @@ public class Post implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Integer getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Integer popularity) {
+        this.popularity = popularity;
     }
 
     @Override

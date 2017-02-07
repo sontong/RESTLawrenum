@@ -36,11 +36,12 @@ public class ReportFacadeREST extends AbstractFacade<Report> {
     }
 
     @GET    
+    @Override
     @Produces({"application/json"})
     public List<Report> findAll() {
         return super.findAll();
     }
-    
+            
     @POST
     @Consumes({"application/json"})
     public String createPost(Report entity) {
