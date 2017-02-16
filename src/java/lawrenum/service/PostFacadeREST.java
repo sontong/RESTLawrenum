@@ -34,38 +34,31 @@ public class PostFacadeREST extends AbstractFacade<Post>{
 
     public PostFacadeREST() {
         super(Post.class);
-    }
+    }   
     
     @GET
     @Path("{id}")
-    @Produces({"application/json"})
-    public Post findByIdpost(@PathParam("id") Integer id) {
-        return super.find(id);
-    }       
-    
+    public void deleteReport(@PathParam("id") Integer id) {
+        super.remove(super.find(id));
+        
+        String query = "DELETE FROM Vote p WHERE p.idpost =" + id;
+        int i = em.createQuery(query).executeUpdate();
+        
+        String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + id;
+        int r = em.createQuery(queryReport).executeUpdate();
+    }
+  
 //    @GET
-//    @Path("idforum")
-//    @Produces({"application/json"})
-//    public List<Post> findByIdforum(@QueryParam("idforum") int idforum) {
-//        return em.createNamedQuery("Post.findByIdforum", Post.class).setParameter("idforum", idforum).getResultList();
+//    @Path("{id}")
+//    public void deleteReport(@QueryParam("idreport") int report, @QueryParam("idpost") int idpost) {
+//        super.remove(super.find(idpost));
+//
+//        String queryVote = "DELETE FROM Vote p WHERE p.idpost =" + idpost;
+//        int v = em.createQuery(queryVote).executeUpdate();
+//        
+//        String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + idpost;
+//        int r = em.createQuery(queryReport).executeUpdate();
 //    }
-    
-    @GET
-    @Path("idforum")
-    @Produces({"application/json"})
-    public List<Post> findByIdforum(@QueryParam("idforum") int idforum) {
-        //return em.createNamedQuery("Post.findByIdforum", Post.class).setParameter("idforum", idforum).getResultList();
-        String query = "SELECT p FROM Post p WHERE p.idforum = "+idforum+" ORDER BY p.sticky DESC";
-        return em.createQuery(query).getResultList();
-    }
-    
-    @GET
-    @Path("tag")
-    @Produces({"application/json"})
-    public List<Post> findByTag(@QueryParam("tag") String tag) {                    
-        String query = "SELECT p FROM Post p WHERE p.tag LIKE '%"+tag+"%'";
-        return em.createQuery(query).getResultList();        
-    }
     
     @POST
     @Consumes({"application/json"})

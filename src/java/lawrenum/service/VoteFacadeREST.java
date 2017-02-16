@@ -5,8 +5,6 @@
  */
 package lawrenum.service;
 
-import java.util.Calendar;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,41 +16,59 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import lawrenum.Post;
-import lawrenum.Request;
+import javax.ws.rs.QueryParam;
+import lawrenum.Vote;
 
 /**
  *
  * @author Son Tong
  */
 @Stateless
-@Path("request")
-public class RequestFacadeREST extends AbstractFacade<Request> {
+@Path("vote")
+public class VoteFacadeREST extends AbstractFacade<Vote> {
 
     @PersistenceContext(unitName = "RESTLawrenumPU")
     private EntityManager em;
 
-    public RequestFacadeREST() {
-        super(Request.class);
-    }    
-
+    public VoteFacadeREST() {
+        super(Vote.class);
+    }
+    
+    @GET
+    @Path("{id}")
+    @Produces({"application/json"})
+    public Vote findByIdvote(@PathParam("id") Integer id) {
+        return super.find(id);
+    } 
+    
+    @GET
+    @Produces({"text/plain"})
+    public int findId(@QueryParam("idpost") int idpost, @QueryParam("iduser") int iduser) {
+        String query = "SELECT p From Vote p WHERE p.idpost ="+idpost+" AND p.iduser="+iduser;
+        Vote v = null;
+        try{
+            v = (Vote) em.createQuery(query).getSingleResult();
+        } catch(Exception ex){
+            return 0;
+        }        
+        return 1;
+    }
+    
     @POST
     @Consumes({"application/json"})
-    public String createPost(Request entity) {
-        entity.setTime(Calendar.getInstance().getTime());
+    public String createVote(Vote entity) {        
         super.create(entity);
         em.flush();
-        return entity.getIdrequest().toString();
+        return entity.getIdvote().toString();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/json"})
-    public void edit(@PathParam("id") Integer id, Request entity) {
+    public void edit(@PathParam("id") Integer id, Vote entity) {
         super.edit(entity);
-    }
-    
+    }    
+
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {

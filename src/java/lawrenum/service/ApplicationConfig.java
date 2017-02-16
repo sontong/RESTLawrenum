@@ -40,6 +40,7 @@ public class ApplicationConfig extends Application {
         resources.add(lawrenum.service.RequestFacadeREST.class);
         resources.add(lawrenum.service.ReviewFacadeREST.class);
         resources.add(lawrenum.service.UserFacadeREST.class);
+        resources.add(lawrenum.service.VoteFacadeREST.class);
     }
     
 }

@@ -47,7 +47,10 @@ public class CommentFacadeREST extends AbstractFacade<Comment> {
     @Path("idpost")
     @Produces({"application/json"})
     public List<Comment> findByIdforum(@QueryParam("idpost") int idpost) {
-        return em.createNamedQuery("Comment.findByIdpost", Comment.class).setParameter("idpost", idpost).getResultList();
+//        return em.createNamedQuery("Comment.findByIdpost", Comment.class).setParameter("idpost", idpost).getResultList();
+         String query = "SELECT p FROM Comment p WHERE p.idpost = "+idpost+
+                " ORDER BY p.time DESC";
+        return em.createQuery(query).getResultList();
     }
         
     @POST

@@ -39,8 +39,15 @@ public class ReportFacadeREST extends AbstractFacade<Report> {
     @Override
     @Produces({"application/json"})
     public List<Report> findAll() {
-        return super.findAll();
+        String query = "SELECT p FROM Report p ORDER BY p.time DESC";       
+        return em.createQuery(query).getResultList();                
     }
+    
+    @GET
+    @Path("{id}")
+    public void deleteReport(@PathParam("id") Integer id) {
+        super.remove(super.find(id));
+    }    
             
     @POST
     @Consumes({"application/json"})

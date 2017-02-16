@@ -10,10 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -35,37 +32,39 @@ public class HandlePostFacadeREST extends AbstractFacade<HandlePost> {
         super(HandlePost.class);
     }
 
+//    @GET
+//    @Path("{id}")
+//    @Produces({"application/json"})
+//    public HandlePost findByIdpost(@PathParam("id") Integer id) {
+//        return super.find(id);
+//    }
+
     @GET
     @Path("{id}")
-    @Produces({"application/json"})
-    public HandlePost findByIdpost(@PathParam("id") Integer id) {
-        return super.find(id);
-    }       
-    
-//    @GET
-//    @Path("idforum")
-//    @Produces({"application/json"})
-//    public List<HandlePost> findByIdforum(@QueryParam("idforum") int idforum) {
-//        return em.createNamedQuery("HandlePost.findByIdforum", HandlePost.class).setParameter("idforum", idforum).getResultList();
-//    }
+    @Produces({"text/plain"})
+    public String findByIdpost(@PathParam("id") Integer id) {
+        HandlePost u = em.createNamedQuery("HandlePost.findByIdpost", HandlePost.class).setParameter("idpost", id).getSingleResult();
+        return u.getContent();
+    }    
     
     @GET
     @Path("idforum")
     @Produces({"application/json"})
     public List<HandlePost> findByIdforum(@QueryParam("idforum") int idforum) {        
-        String query = "SELECT p FROM HandlePost p WHERE p.idforum = "+idforum+" ORDER BY p.sticky DESC";
+        String query = "SELECT p FROM HandlePost p WHERE p.idforum = "+idforum+
+                " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
         return em.createQuery(query).getResultList();
     }
-    
     
     @GET
     @Path("tag")
     @Produces({"application/json"})
     public List<HandlePost> findByTag(@QueryParam("tag") String tag) {                    
-        String query = "SELECT p FROM HandlePost p WHERE p.tag LIKE '%"+tag+"%'";
+        String query = "SELECT p FROM HandlePost p WHERE p.tag LIKE '%"+tag+"%'" +
+                " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
         return em.createQuery(query).getResultList();        
-    }
-    
+    }    
+                     
     @Override
     protected EntityManager getEntityManager() {
         return em;

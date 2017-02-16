@@ -33,13 +33,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HandlePost.findAll", query = "SELECT h FROM HandlePost h"),
     @NamedQuery(name = "HandlePost.findByIdpost", query = "SELECT h FROM HandlePost h WHERE h.idpost = :idpost"),
-    @NamedQuery(name = "HandlePost.findByIduser", query = "SELECT h FROM HandlePost h WHERE h.iduser = :iduser"),
     @NamedQuery(name = "HandlePost.findByIdforum", query = "SELECT h FROM HandlePost h WHERE h.idforum = :idforum"),
+    @NamedQuery(name = "HandlePost.findByIduser", query = "SELECT h FROM HandlePost h WHERE h.iduser = :iduser"),
+    @NamedQuery(name = "HandlePost.findByFullname", query = "SELECT h FROM HandlePost h WHERE h.fullname = :fullname"),
     @NamedQuery(name = "HandlePost.findByTitle", query = "SELECT h FROM HandlePost h WHERE h.title = :title"),
     @NamedQuery(name = "HandlePost.findByTag", query = "SELECT h FROM HandlePost h WHERE h.tag = :tag"),
     @NamedQuery(name = "HandlePost.findByTime", query = "SELECT h FROM HandlePost h WHERE h.time = :time"),
-    @NamedQuery(name = "HandlePost.findByFullname", query = "SELECT h FROM HandlePost h WHERE h.fullname = :fullname"),
-    @NamedQuery(name = "HandlePost.findBySticky", query = "SELECT h FROM HandlePost h WHERE h.sticky = :sticky")})
+    @NamedQuery(name = "HandlePost.findBySticky", query = "SELECT h FROM HandlePost h WHERE h.sticky = :sticky"),
+    @NamedQuery(name = "HandlePost.findByUpvote", query = "SELECT h FROM HandlePost h WHERE h.upvote = :upvote")})
 public class HandlePost implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,12 +51,15 @@ public class HandlePost implements Serializable {
     private Integer idpost;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "iduser")
-    private int iduser;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "idforum")
     private int idforum;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "iduser")
+    private int iduser;
+    @Size(max = 45)
+    @Column(name = "fullname")
+    private String fullname;
     @Size(max = 256)
     @Column(name = "title")
     private String title;
@@ -69,11 +73,14 @@ public class HandlePost implements Serializable {
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
-    @Size(max = 45)
-    @Column(name = "fullname")
-    private String fullname;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "sticky")
-    private Integer sticky;
+    private long sticky;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "upvote")
+    private long upvote;
 
     public HandlePost() {
     }
@@ -86,6 +93,14 @@ public class HandlePost implements Serializable {
         this.idpost = idpost;
     }
 
+    public int getIdforum() {
+        return idforum;
+    }
+
+    public void setIdforum(int idforum) {
+        this.idforum = idforum;
+    }
+
     public int getIduser() {
         return iduser;
     }
@@ -94,12 +109,12 @@ public class HandlePost implements Serializable {
         this.iduser = iduser;
     }
 
-    public int getIdforum() {
-        return idforum;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setIdforum(int idforum) {
-        this.idforum = idforum;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getTitle() {
@@ -134,20 +149,20 @@ public class HandlePost implements Serializable {
         this.time = time;
     }
 
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public Integer getSticky() {
+    public long getSticky() {
         return sticky;
     }
 
-    public void setSticky(Integer sticky) {
+    public void setSticky(long sticky) {
         this.sticky = sticky;
+    }
+
+    public long getUpvote() {
+        return upvote;
+    }
+
+    public void setUpvote(long upvote) {
+        this.upvote = upvote;
     }
     
 }
