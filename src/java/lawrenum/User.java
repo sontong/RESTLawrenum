@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByType", query = "SELECT u FROM User u WHERE u.type = :type"),
     @NamedQuery(name = "User.findByFullname", query = "SELECT u FROM User u WHERE u.fullname = :fullname"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByGraduationYear", query = "SELECT u FROM User u WHERE u.graduationYear = :graduationYear")})
+    @NamedQuery(name = "User.findByGradyear", query = "SELECT u FROM User u WHERE u.gradyear = :gradyear")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,8 +57,8 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "email")
     private String email;
-    @Column(name = "graduation_year")
-    private Integer graduationYear;
+    @Column(name = "gradyear")
+    private Integer gradyear;
 
     public User() {
     }
@@ -115,12 +115,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Integer getGraduationYear() {
-        return graduationYear;
+    public Integer getGradyear() {
+        return gradyear;
     }
 
-    public void setGraduationYear(Integer graduationYear) {
-        this.graduationYear = graduationYear;
+    public void setGradyear(Integer gradyear) {
+        this.gradyear = gradyear;
     }
 
     @Override

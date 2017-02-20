@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Report.findByIdreport", query = "SELECT r FROM Report r WHERE r.idreport = :idreport"),
     @NamedQuery(name = "Report.findByIduser", query = "SELECT r FROM Report r WHERE r.iduser = :iduser"),
     @NamedQuery(name = "Report.findByIdtarget", query = "SELECT r FROM Report r WHERE r.idtarget = :idtarget"),
-    @NamedQuery(name = "Report.findByTargetType", query = "SELECT r FROM Report r WHERE r.targetType = :targetType"),
     @NamedQuery(name = "Report.findByTime", query = "SELECT r FROM Report r WHERE r.time = :time")})
 public class Report implements Serializable {
 
@@ -53,10 +52,6 @@ public class Report implements Serializable {
     @NotNull
     @Column(name = "idtarget")
     private int idtarget;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "target_type")
-    private int targetType;
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
@@ -72,11 +67,10 @@ public class Report implements Serializable {
         this.idreport = idreport;
     }
 
-    public Report(Integer idreport, int iduser, int idtarget, int targetType) {
+    public Report(Integer idreport, int iduser, int idtarget) {
         this.idreport = idreport;
         this.iduser = iduser;
         this.idtarget = idtarget;
-        this.targetType = targetType;
     }
 
     public Integer getIdreport() {
@@ -101,14 +95,6 @@ public class Report implements Serializable {
 
     public void setIdtarget(int idtarget) {
         this.idtarget = idtarget;
-    }
-
-    public int getTargetType() {
-        return targetType;
-    }
-
-    public void setTargetType(int targetType) {
-        this.targetType = targetType;
     }
 
     public String getContent() {

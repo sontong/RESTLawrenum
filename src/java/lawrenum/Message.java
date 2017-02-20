@@ -28,58 +28,54 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Son Tong
  */
 @Entity
-@Table(name = "request")
+@Table(name = "message")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Request.findAll", query = "SELECT r FROM Request r"),
-    @NamedQuery(name = "Request.findByIdrequest", query = "SELECT r FROM Request r WHERE r.idrequest = :idrequest"),
-    @NamedQuery(name = "Request.findByIduser", query = "SELECT r FROM Request r WHERE r.iduser = :iduser"),
-    @NamedQuery(name = "Request.findByType", query = "SELECT r FROM Request r WHERE r.type = :type"),
-    @NamedQuery(name = "Request.findByTitle", query = "SELECT r FROM Request r WHERE r.title = :title"),
-    @NamedQuery(name = "Request.findByTime", query = "SELECT r FROM Request r WHERE r.time = :time")})
-public class Request implements Serializable {
+    @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m"),
+    @NamedQuery(name = "Message.findByIdmessage", query = "SELECT m FROM Message m WHERE m.idmessage = :idmessage"),
+    @NamedQuery(name = "Message.findByIduser", query = "SELECT m FROM Message m WHERE m.iduser = :iduser"),
+    @NamedQuery(name = "Message.findBySeen", query = "SELECT m FROM Message m WHERE m.seen = :seen"),
+    @NamedQuery(name = "Message.findByTime", query = "SELECT m FROM Message m WHERE m.time = :time")})
+public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idrequest")
-    private Integer idrequest;
+    @Column(name = "idmessage")
+    private Integer idmessage;
     @Basic(optional = false)
     @NotNull
     @Column(name = "iduser")
     private int iduser;
-    @Column(name = "type")
-    private Integer type;
-    @Size(max = 256)
-    @Column(name = "title")
-    private String title;
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
+    @Column(name = "seen")
+    private Integer seen;
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
-    public Request() {
+    public Message() {
     }
 
-    public Request(Integer idrequest) {
-        this.idrequest = idrequest;
+    public Message(Integer idmessage) {
+        this.idmessage = idmessage;
     }
 
-    public Request(Integer idrequest, int iduser) {
-        this.idrequest = idrequest;
+    public Message(Integer idmessage, int iduser) {
+        this.idmessage = idmessage;
         this.iduser = iduser;
     }
 
-    public Integer getIdrequest() {
-        return idrequest;
+    public Integer getIdmessage() {
+        return idmessage;
     }
 
-    public void setIdrequest(Integer idrequest) {
-        this.idrequest = idrequest;
+    public void setIdmessage(Integer idmessage) {
+        this.idmessage = idmessage;
     }
 
     public int getIduser() {
@@ -90,28 +86,20 @@ public class Request implements Serializable {
         this.iduser = iduser;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getSeen() {
+        return seen;
+    }
+
+    public void setSeen(Integer seen) {
+        this.seen = seen;
     }
 
     public Date getTime() {
@@ -125,18 +113,18 @@ public class Request implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idrequest != null ? idrequest.hashCode() : 0);
+        hash += (idmessage != null ? idmessage.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Request)) {
+        if (!(object instanceof Message)) {
             return false;
         }
-        Request other = (Request) object;
-        if ((this.idrequest == null && other.idrequest != null) || (this.idrequest != null && !this.idrequest.equals(other.idrequest))) {
+        Message other = (Message) object;
+        if ((this.idmessage == null && other.idmessage != null) || (this.idmessage != null && !this.idmessage.equals(other.idmessage))) {
             return false;
         }
         return true;
@@ -144,7 +132,7 @@ public class Request implements Serializable {
 
     @Override
     public String toString() {
-        return "lawrenum.Request[ idrequest=" + idrequest + " ]";
+        return "lawrenum.Message[ idmessage=" + idmessage + " ]";
     }
     
 }

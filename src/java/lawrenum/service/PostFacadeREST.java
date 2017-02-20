@@ -6,7 +6,6 @@
 package lawrenum.service;
 
 import java.util.Calendar;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,8 +26,8 @@ import lawrenum.Post;
  */
 @Stateless
 @Path("post")
-public class PostFacadeREST extends AbstractFacade<Post>{
-
+public class PostFacadeREST extends AbstractFacade<Post>{    
+    
     @PersistenceContext(unitName = "RESTLawrenumPU")
     private EntityManager em;
 
@@ -40,25 +39,13 @@ public class PostFacadeREST extends AbstractFacade<Post>{
     @Path("{id}")
     public void deleteReport(@PathParam("id") Integer id) {
         super.remove(super.find(id));
-        
+
         String query = "DELETE FROM Vote p WHERE p.idpost =" + id;
         int i = em.createQuery(query).executeUpdate();
-        
+
         String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + id;
         int r = em.createQuery(queryReport).executeUpdate();
-    }
-  
-//    @GET
-//    @Path("{id}")
-//    public void deleteReport(@QueryParam("idreport") int report, @QueryParam("idpost") int idpost) {
-//        super.remove(super.find(idpost));
-//
-//        String queryVote = "DELETE FROM Vote p WHERE p.idpost =" + idpost;
-//        int v = em.createQuery(queryVote).executeUpdate();
-//        
-//        String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + idpost;
-//        int r = em.createQuery(queryReport).executeUpdate();
-//    }
+    }  
     
     @POST
     @Consumes({"application/json"})

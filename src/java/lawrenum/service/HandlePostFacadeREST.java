@@ -32,13 +32,6 @@ public class HandlePostFacadeREST extends AbstractFacade<HandlePost> {
         super(HandlePost.class);
     }
 
-//    @GET
-//    @Path("{id}")
-//    @Produces({"application/json"})
-//    public HandlePost findByIdpost(@PathParam("id") Integer id) {
-//        return super.find(id);
-//    }
-
     @GET
     @Path("{id}")
     @Produces({"text/plain"})
