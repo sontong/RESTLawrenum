@@ -130,35 +130,46 @@ public class MessageFacadeREST extends AbstractFacade<Message> {
         em.flush();
     }
 
-    @GET
-    @Path("requestDeclined")
-    public void sendRequestDeclined(@QueryParam("idrequest") int idrequest, @QueryParam("reason") String reason) {        
-        Message toRequester = new Message();
+//    @GET
+//    @Path("requestDeclined")
+//    public void sendRequestDeclined(@QueryParam("idrequest") int idrequest, @QueryParam("reason") String reason) {        
+//        Message toRequester = new Message();
+//        
+//        Request r = null;
+//        try {
+//            r = em.createNamedQuery("Request.findByIdrequest", Request.class).setParameter("idrequest", idrequest).getSingleResult();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        
+//        toRequester.setIduser(r.getIduser());
+//        toRequester.setSeen(0);
+//        toRequester.setTime(Calendar.getInstance().getTime());
+//        toRequester.setContent(request + r.getTitle() + "\n" + requestDeclined + reason);
+//
+//        super.create(toRequester);
+//        em.flush();
+//    }
+    
+    @POST    
+    @Consumes({"application/json"})
+    public void createMessage(Message entity) {         
+        entity.setSeen(0);
+        entity.setTime(Calendar.getInstance().getTime());
+        entity.setContent("Your recent request for a new subforum has been declined for this reason: " + entity.getContent());
         
-        Request r = null;
-        try {
-            r = em.createNamedQuery("Request.findByIdrequest", Request.class).setParameter("idrequest", idrequest).getSingleResult();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        
-        toRequester.setIduser(r.getIduser());
-        toRequester.setSeen(0);
-        toRequester.setTime(Calendar.getInstance().getTime());
-        toRequester.setContent(request + r.getTitle() + "\n" + requestDeclined + reason);
-
-        super.create(toRequester);
+        super.create(entity);
         em.flush();
     }
     
-    @POST
-    @Consumes({"application/json"})
-    public String createMessage(Message entity) {
-        entity.setTime(Calendar.getInstance().getTime());
-        super.create(entity);
-        em.flush();
-        return entity.getIdmessage().toString();
-    }
+//    @POST
+//    @Consumes({"application/json"})
+//    public String createMessage(Message entity) {
+//        entity.setTime(Calendar.getInstance().getTime());
+//        super.create(entity);
+//        em.flush();
+//        return entity.getIdmessage().toString();
+//    }
     
     public void newMessage(Message entity){
         super.create(entity);

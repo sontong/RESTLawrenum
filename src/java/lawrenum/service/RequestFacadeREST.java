@@ -18,7 +18,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import lawrenum.Post;
 import lawrenum.Request;
 
 /**
@@ -36,6 +35,20 @@ public class RequestFacadeREST extends AbstractFacade<Request> {
         super(Request.class);
     }    
 
+    @GET    
+    @Override
+    @Produces({"application/json"})
+    public List<Request> findAll() {
+        String query = "SELECT p FROM Request p ORDER BY p.time DESC";       
+        return em.createQuery(query).getResultList();                
+    }
+    
+    @GET
+    @Path("{id}")
+    public void deleteRequest(@PathParam("id") Integer id) {
+        super.remove(super.find(id));
+    }   
+    
     @POST
     @Consumes({"application/json"})
     public String createPost(Request entity) {
