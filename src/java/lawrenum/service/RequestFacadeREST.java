@@ -47,7 +47,7 @@ public class RequestFacadeREST extends AbstractFacade<Request> {
     @Path("{id}")
     public void deleteRequest(@PathParam("id") Integer id) {
         super.remove(super.find(id));
-    }   
+    }    
     
     @POST
     @Consumes({"application/json"})

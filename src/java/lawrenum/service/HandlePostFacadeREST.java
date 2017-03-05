@@ -57,6 +57,16 @@ public class HandlePostFacadeREST extends AbstractFacade<HandlePost> {
                 " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
         return em.createQuery(query).getResultList();        
     }    
+    
+    @GET
+    @Path("iduser")
+    @Produces({"application/json"})
+    public List<HandlePost> findByIduser(@QueryParam("iduser") int iduser) {        
+        String query = "SELECT p FROM HandlePost p WHERE p.iduser = "+iduser+
+                " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
+        return em.createQuery(query).getResultList();
+    }
+            
                      
     @Override
     protected EntityManager getEntityManager() {

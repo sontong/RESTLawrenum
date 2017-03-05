@@ -129,6 +129,27 @@ public class MessageFacadeREST extends AbstractFacade<Message> {
         super.create(toRequester);
         em.flush();
     }
+    
+    @GET
+    @Path("requestDeclined")
+    public void sendRequestDeclined(@QueryParam("idrequest") int idrequest) {        
+        Message toRequester = new Message();
+        
+        Request r = null;
+        try {
+            r = em.createNamedQuery("Request.findByIdrequest", Request.class).setParameter("idrequest", idrequest).getSingleResult();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        toRequester.setIduser(r.getIduser());
+        toRequester.setSeen(0);
+        toRequester.setTime(Calendar.getInstance().getTime());
+        toRequester.setContent(request + r.getTitle() + "\n" + "has been declined!");
+
+        super.create(toRequester);
+        em.flush();
+    }
 
 //    @GET
 //    @Path("requestDeclined")
