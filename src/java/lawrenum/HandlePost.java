@@ -38,17 +38,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HandlePost.findByFullname", query = "SELECT h FROM HandlePost h WHERE h.fullname = :fullname"),
     @NamedQuery(name = "HandlePost.findByTitle", query = "SELECT h FROM HandlePost h WHERE h.title = :title"),
     @NamedQuery(name = "HandlePost.findByTag", query = "SELECT h FROM HandlePost h WHERE h.tag = :tag"),
-    @NamedQuery(name = "HandlePost.findByTime", query = "SELECT h FROM HandlePost h WHERE h.time = :time"),
-    @NamedQuery(name = "HandlePost.findBySticky", query = "SELECT h FROM HandlePost h WHERE h.sticky = :sticky"),
+    @NamedQuery(name = "HandlePost.findByTime", query = "SELECT h FROM HandlePost h WHERE h.time = :time"),    
     @NamedQuery(name = "HandlePost.findByUpvote", query = "SELECT h FROM HandlePost h WHERE h.upvote = :upvote")})
 public class HandlePost implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idpost")
     private Integer idpost;
+
+    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Column(name = "idforum")
@@ -73,25 +73,12 @@ public class HandlePost implements Serializable {
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "sticky")
-    private long sticky;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "upvote")
-    private long upvote;
+    private Integer upvote;
 
     public HandlePost() {
     }
 
-    public int getIdpost() {
-        return idpost;
-    }
-
-    public void setIdpost(int idpost) {
-        this.idpost = idpost;
-    }
 
     public int getIdforum() {
         return idforum;
@@ -149,20 +136,20 @@ public class HandlePost implements Serializable {
         this.time = time;
     }
 
-    public long getSticky() {
-        return sticky;
-    }
-
-    public void setSticky(long sticky) {
-        this.sticky = sticky;
-    }
-
-    public long getUpvote() {
+    public Integer getUpvote() {
         return upvote;
     }
 
-    public void setUpvote(long upvote) {
+    public void setUpvote(Integer upvote) {
         this.upvote = upvote;
+    }
+
+    public int getIdpost() {
+        return idpost;
+    }
+
+    public void setIdpost(int idpost) {
+        this.idpost = idpost;
     }
     
 }

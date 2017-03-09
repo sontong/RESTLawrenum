@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post p WHERE p.title = :title"),
     @NamedQuery(name = "Post.findByTag", query = "SELECT p FROM Post p WHERE p.tag = :tag"),
     @NamedQuery(name = "Post.findByTime", query = "SELECT p FROM Post p WHERE p.time = :time"),
-    @NamedQuery(name = "Post.findBySticky", query = "SELECT p FROM Post p WHERE p.sticky = :sticky")})
+    @NamedQuery(name = "Post.findByUpvote", query = "SELECT p FROM Post p WHERE p.upvote = :upvote")})
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,8 +68,8 @@ public class Post implements Serializable {
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
-    @Column(name = "sticky")
-    private Integer sticky;
+    @Column(name = "upvote")
+    private Integer upvote;
 
     public Post() {
     }
@@ -140,12 +140,12 @@ public class Post implements Serializable {
         this.time = time;
     }
 
-    public Integer getSticky() {
-        return sticky;
+    public Integer getUpvote() {
+        return upvote;
     }
 
-    public void setSticky(Integer sticky) {
-        this.sticky = sticky;
+    public void setUpvote(Integer upvote) {
+        this.upvote = upvote;
     }
 
     @Override

@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -45,7 +44,7 @@ public class HandlePostFacadeREST extends AbstractFacade<HandlePost> {
     @Produces({"application/json"})
     public List<HandlePost> findByIdforum(@QueryParam("idforum") int idforum) {        
         String query = "SELECT p FROM HandlePost p WHERE p.idforum = "+idforum+
-                " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
+                " ORDER BY CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
         return em.createQuery(query).getResultList();
     }
     
@@ -54,19 +53,18 @@ public class HandlePostFacadeREST extends AbstractFacade<HandlePost> {
     @Produces({"application/json"})
     public List<HandlePost> findByTag(@QueryParam("tag") String tag) {                    
         String query = "SELECT p FROM HandlePost p WHERE p.tag LIKE '%"+tag+"%'" +
-                " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
+                " ORDER BY CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
         return em.createQuery(query).getResultList();        
-    }    
+    }   
     
     @GET
     @Path("iduser")
     @Produces({"application/json"})
     public List<HandlePost> findByIduser(@QueryParam("iduser") int iduser) {        
         String query = "SELECT p FROM HandlePost p WHERE p.iduser = "+iduser+
-                " ORDER BY p.sticky DESC, CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
+                " ORDER BY CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
         return em.createQuery(query).getResultList();
     }
-            
                      
     @Override
     protected EntityManager getEntityManager() {

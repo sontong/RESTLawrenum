@@ -37,46 +37,24 @@ public class PostFacadeREST extends AbstractFacade<Post>{
     
     @GET
     @Path("deletePost")
-    public void deletePost(@QueryParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void deletePost(@QueryParam("idpost") Integer idpost) {
+        super.remove(super.find(idpost));
 
-        String query = "DELETE FROM Vote p WHERE p.idpost =" + id;
+        String query = "DELETE FROM Vote p WHERE p.idpost =" + idpost;
         int i = em.createQuery(query).executeUpdate();
 
-        String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + id;
+        String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + idpost;
         int r = em.createQuery(queryReport).executeUpdate();
-    }  
-    
-//    @GET
-//    @Path("deleteReport")
-//    public void deleteReport(@QueryParam("idpost") Integer idpost) {
-//        super.remove(super.find(idpost));
-//
-//        String query = "DELETE FROM Vote p WHERE p.idpost =" + idpost;
-//        int i = em.createQuery(query).executeUpdate();
-//
-//        String queryReport = "DELETE FROM Report p WHERE p.idtarget =" + idpost;
-//        int r = em.createQuery(queryReport).executeUpdate();
-//    }
-
-    @GET
-    @Path("{id}")
-    @Consumes({"application/json"})
-    public void editPost(@PathParam("id") Integer id, Post entity) {
-//        super.edit(entity);                
-        String update  = "UPDATE Post p SET p.title = "+entity.getTitle()+","
-                + "p.content = "+entity.getContent()+","
-                + "p.tag = "+entity.getTag()+","
-                + "p.time = "+Calendar.getInstance().getTime()+""
-                + "  WHERE p.idpost = "+id;
         
-        int i = em.createQuery(update).executeUpdate();
-    }
+        String queryComment = "DELETE FROM Comment c WHERE c.idpost =" + idpost;
+        int cm = em.createQuery(queryComment).executeUpdate();
+    }          
     
     @POST
     @Consumes({"application/json"})
     public String createPost(Post entity) {
         entity.setTime(Calendar.getInstance().getTime());
+        entity.setUpvote(0);
         super.create(entity);
         em.flush();
         return entity.getIdpost().toString();
@@ -106,6 +84,5 @@ public class PostFacadeREST extends AbstractFacade<Post>{
     @Override
     protected EntityManager getEntityManager() {
         return em;
-    }
-    
+    }    
 }
