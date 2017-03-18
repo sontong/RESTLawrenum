@@ -6,6 +6,7 @@
 package lawrenum.service;
 
 import java.util.Calendar;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +35,15 @@ public class PostFacadeREST extends AbstractFacade<Post>{
     public PostFacadeREST() {
         super(Post.class);
     }   
+    
+    @GET
+    @Path("getAll")
+    @Produces({"application/json"})
+    public List<Post> getAllPostByIdForum(@QueryParam("idforum") int idforum) {        
+        String query = "SELECT p FROM Post p WHERE p.idforum = "+idforum+
+                " ORDER BY CAST(p.time AS DATE) DESC, p.upvote DESC, p.time DESC";
+        return em.createQuery(query).getResultList();
+    }
     
     @GET
     @Path("deletePost")

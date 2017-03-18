@@ -52,7 +52,7 @@ public class VoteFacadeREST extends AbstractFacade<Vote> {
             return 0;
         }        
         return 1;
-    }
+    }    
     
     @POST
     @Consumes({"application/json"})
@@ -60,19 +60,14 @@ public class VoteFacadeREST extends AbstractFacade<Vote> {
         // Persist the vote into the Vote table
         super.create(entity);
         em.flush();
-                
-        // Update the Post table
-//        String query = "UPDATE Post p SET p.upvote = IFNULL(p.upvote, 0) + 1 "
-//                + "WHERE p.idpost = " + entity.getIdpost();
-        
-//        String query = "UPDATE Post p SET p.upvote = p.upvote + " + 1
-//                + "WHERE p.idpost = " + entity.getIdpost();
-//        int i = em.createQuery(query).executeUpdate();
 
-        String query = "UPDATE Post p SET p.upvote = p.upvote + 1 WHERE p.idpost = " + entity.getIdpost();
-        int i = em.createQuery(query).executeUpdate();
-                                        
-        return entity.getIdvote().toString();                        
+//        String query = "UPDATE Post p SET p.upvote = p.upvote + 1 WHERE p.idpost = " + entity.getIdpost();
+//        int i = em.createQuery(query).executeUpdate();
+        
+        String q2 = "UPDATE HandlePost p SET p.upvote = p.upvote + 1 WHERE p.idpost = " + entity.getIdpost();
+        int ii = em.createQuery(q2).executeUpdate();
+
+        return entity.getIdvote().toString();
     }
 
     @PUT
