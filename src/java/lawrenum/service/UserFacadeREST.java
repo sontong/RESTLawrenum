@@ -64,6 +64,13 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return u.getIduser().toString();
     }
     
+    @GET
+    @Path("avatar")
+    public void uploadAvatar(@QueryParam("iduser") int iduser, @QueryParam("url") String url){
+        String query = "UPDATE User u SET u.avatar = "+url+" WHERE u.iduser = "+iduser;
+        int i = em.createQuery(query).executeUpdate();
+    }
+    
     @POST
     @Consumes({"application/json"})
     @Produces({"application/json"})

@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByType", query = "SELECT u FROM User u WHERE u.type = :type"),
     @NamedQuery(name = "User.findByFullname", query = "SELECT u FROM User u WHERE u.fullname = :fullname"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByGradyear", query = "SELECT u FROM User u WHERE u.gradyear = :gradyear")})
+    @NamedQuery(name = "User.findByGradyear", query = "SELECT u FROM User u WHERE u.gradyear = :gradyear"),
+    @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +60,9 @@ public class User implements Serializable {
     private String email;
     @Column(name = "gradyear")
     private Integer gradyear;
+    @Size(max = 128)
+    @Column(name = "avatar")
+    private String avatar;
 
     public User() {
     }
@@ -121,6 +125,14 @@ public class User implements Serializable {
 
     public void setGradyear(Integer gradyear) {
         this.gradyear = gradyear;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

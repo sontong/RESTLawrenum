@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import lawrenum.HandlePost;
 import lawrenum.Post;
 
 /**
@@ -67,6 +68,24 @@ public class PostFacadeREST extends AbstractFacade<Post>{
         entity.setUpvote(0);
         super.create(entity);
         em.flush();
+        return entity.getIdpost().toString();
+    }
+    
+    @POST
+    @Path("edit")
+    @Consumes("application/json")
+    public String editPost(Post entity) {                   
+        
+        String q2 = "UPDATE HandlePost p "
+                  + "SET "
+                  + "p.idforum = " + entity.getIdforum() 
+                  + ", p.title = " + entity.getTitle()
+                  + ", p.content = " + entity.getContent()
+                  + ", p.tag = " + entity.getTag()
+                  + ", p.time = " + Calendar.getInstance().getTime()
+                  + " WHERE p.idpost = " + entity.getIdpost();
+        int ii = em.createQuery(q2).executeUpdate();
+
         return entity.getIdpost().toString();
     }
 
