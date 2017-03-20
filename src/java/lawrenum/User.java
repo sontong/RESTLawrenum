@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByFullname", query = "SELECT u FROM User u WHERE u.fullname = :fullname"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByGradyear", query = "SELECT u FROM User u WHERE u.gradyear = :gradyear"),
-    @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar")})
+    @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
+    @NamedQuery(name = "User.findByIsbeingcalled", query = "SELECT u FROM User u WHERE u.isbeingcalled = :isbeingcalled")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,6 +64,8 @@ public class User implements Serializable {
     @Size(max = 128)
     @Column(name = "avatar")
     private String avatar;
+    @Column(name = "isbeingcalled")
+    private Integer isbeingcalled;
 
     public User() {
     }
@@ -133,6 +136,14 @@ public class User implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getIsbeingcalled() {
+        return isbeingcalled;
+    }
+
+    public void setIsbeingcalled(Integer isbeingcalled) {
+        this.isbeingcalled = isbeingcalled;
     }
 
     @Override

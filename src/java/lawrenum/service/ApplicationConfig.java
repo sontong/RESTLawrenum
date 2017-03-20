@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(lawrenum.service.CallingSessionFacadeREST.class);
         resources.add(lawrenum.service.CommentFacadeREST.class);
         resources.add(lawrenum.service.ForumFacadeREST.class);
         resources.add(lawrenum.service.HandleCommentFacadeREST.class);

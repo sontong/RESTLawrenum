@@ -5,6 +5,7 @@
  */
 package lawrenum.service;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +33,21 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     public UserFacadeREST() {
         super(User.class);
+    }
+    
+    @GET
+    @Path("getAllUsers")
+    @Produces({"application/json"})
+    public List<User> getAllUsers(){
+        return em.createNamedQuery("User.findAll", User.class).getResultList();
+    }
+    
+    @GET
+    @Path("search")
+    @Produces({"application/json"})
+    public List<User> searchByName(@QueryParam("fullname") String fullname){        
+        String query = "SELECT u FROM User u WHERE u.fullname LIKE '%"+fullname+"%'";
+        return em.createQuery(query).getResultList();
     }
     
     @GET
@@ -67,7 +83,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("avatar")
     public void uploadAvatar(@QueryParam("iduser") int iduser, @QueryParam("url") String url){
-        String query = "UPDATE User u SET u.avatar = "+url+" WHERE u.iduser = "+iduser;
+        String query = "UPDATE User u SET u.avatar = '"+url+"' WHERE u.iduser = "+iduser;
         int i = em.createQuery(query).executeUpdate();
     }
     
