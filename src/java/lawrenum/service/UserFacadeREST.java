@@ -5,6 +5,7 @@
  */
 package lawrenum.service;
 
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -85,6 +86,49 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public void uploadAvatar(@QueryParam("iduser") int iduser, @QueryParam("url") String url){
         String query = "UPDATE User u SET u.avatar = '"+url+"' WHERE u.iduser = "+iduser;
         int i = em.createQuery(query).executeUpdate();
+    }
+    
+    @GET
+    @Path("ping")
+    public void pingServer(@QueryParam("iduser") int iduser){        
+        try{
+            User u = em.createNamedQuery("User.findByIduser", User.class).setParameter("iduser", iduser).getSingleResult();
+            u.setLastOnline(Calendar.getInstance().getTime());
+            super.edit(u);
+        } catch(Exception ex){            
+        }
+    }
+            
+    @GET
+    @Path("updateStatus")
+    public void updateStatus(){
+        List<User> userList = em.createNamedQuery("User.findAll", User.class).getResultList();        
+        long msDiff;                
+        
+        for (User u : userList) {
+            msDiff = Calendar.getInstance().getTime().getTime() - u.getLastOnline().getTime();   
+            // If difference between the last time an user ping the server is bigger than 10 seconds,
+            // then his status is changed to offline 
+            if(msDiff > 1000*10){
+                u.setStatus(0);
+                super.edit(u);
+            } else {
+                u.setStatus(1);
+                super.edit(u);
+            }               
+        }
+    }
+    
+    @GET
+    @Path("exp")
+    public void exp(){
+        List<User> userList = em.createNamedQuery("User.findAll", User.class).getResultList();        
+        long msDiff;                
+        
+        for (User u : userList) {
+            u.setLastOnline(Calendar.getInstance().getTime());
+            super.edit(u);
+        }
     }
     
     @POST
