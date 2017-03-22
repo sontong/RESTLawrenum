@@ -6,6 +6,7 @@
 package lawrenum;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,7 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByGradyear", query = "SELECT u FROM User u WHERE u.gradyear = :gradyear"),
     @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
-    @NamedQuery(name = "User.findByIsbeingcalled", query = "SELECT u FROM User u WHERE u.isbeingcalled = :isbeingcalled")})
+    @NamedQuery(name = "User.findByIsbeingcalled", query = "SELECT u FROM User u WHERE u.isbeingcalled = :isbeingcalled"),
+    @NamedQuery(name = "User.findByLastOnline", query = "SELECT u FROM User u WHERE u.lastOnline = :lastOnline"),
+    @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +71,11 @@ public class User implements Serializable {
     private String avatar;
     @Column(name = "isbeingcalled")
     private Integer isbeingcalled;
+    @Column(name = "LastOnline")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastOnline;
+    @Column(name = "Status")
+    private Integer status;
 
     public User() {
     }
@@ -144,6 +154,22 @@ public class User implements Serializable {
 
     public void setIsbeingcalled(Integer isbeingcalled) {
         this.isbeingcalled = isbeingcalled;
+    }
+
+    public Date getLastOnline() {
+        return lastOnline;
+    }
+
+    public void setLastOnline(Date lastOnline) {
+        this.lastOnline = lastOnline;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override

@@ -42,27 +42,76 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
     @Produces({"application/json"})
     public List<CallingSession> getAll(){
         return em.createNamedQuery("CallingSession.findAll", CallingSession.class).getResultList();
+    }  
+    
+    @GET
+    public int getCallStatus(@QueryParam("idcall") int idcall){        
+        String query =  "SELECT c FROM CallingSession c WHERE c.idcall="+idcall+
+                        " AND c.time IS NOT NULL";
+        try{
+            em.createQuery(query).getSingleResult();
+            return 1;
+        } catch(Exception ex){
+            return 0;
+        }
     }
-
-//    @GET
-//    public void createCall(@QueryParam("idcaller") Integer idcaller, @QueryParam("idreceiver") Integer idreceiver){
-//        CallingSession newCall = new CallingSession();        
-//        newCall.setIdcaller(idcaller);
-//        newCall.setIdreceiver(idreceiver);
-//        newCall.setTime(Calendar.getInstance().getTime());
-//        super.create(newCall);
-//        em.flush();
-//    }
-//            
+    
+    @GET
+    @Path("acceptCall")
+    public void acceptCall(@QueryParam("idcall") int idcall){
+        CallingSession c = null;
+        try{
+            c = em.createNamedQuery("CallingSession.findByIdcall", CallingSession.class).setParameter("idcall", idcall).getSingleResult();
+        } catch(Exception ex){
+        }
+        
+        c.setTime(Calendar.getInstance().getTime());
+        super.edit(c);
+        
+//        String startCall = "UPDATE CallingSession c SET c.time = " + Calendar.getInstance().getTime()
+//                + " WHERE c.idcall="+idcall;
+//        int i = em.createQuery(startCall).executeUpdate();
+        
+        String changeUserStatus = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+c.getIdreceiver();
+        int ii = em.createQuery(changeUserStatus).executeUpdate();
+    }
+    
+    @GET
+    @Path("endCall")
+    public void endCall(@QueryParam("idcall") int idcall){
+        CallingSession c = null;
+        try{
+            c = em.createNamedQuery("CallingSession.findByIdcall", CallingSession.class).setParameter("idcall", idcall).getSingleResult();
+        } catch(Exception ex){
+        }
+        
+        String endCall = "UPDATE User u SET u.isbeingcalled = 0 WHERE u.iduser IN ("+c.getIdcaller()+","+c.getIdreceiver()+")";
+        int i = em.createQuery(endCall).executeUpdate();
+    }
+    
+    @GET 
+    @Path("stopCall")
+    public void stopCall(@QueryParam("idcall") int idcall){
+        CallingSession c = null;
+        try{
+            c = em.createNamedQuery("CallingSession.findByIdcall", CallingSession.class).setParameter("idcall", idcall).getSingleResult();
+        } catch(Exception ex){
+        }
+        
+        String endCall = "UPDATE User u SET u.isbeingcalled = 0 WHERE u.iduser = "+c.getIdcaller();
+        int i = em.createQuery(endCall).executeUpdate();
+    }
     
     @POST
     @Consumes({"application/json"})
-    public String createCall(CallingSession entity) {   
-        entity.setTime(Calendar.getInstance().getTime());
+    public int createCall(CallingSession entity) {                  
         super.create(entity);
         em.flush();
-
-        return entity.getIdcall().toString();
+        
+        String query = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+entity.getIdcaller();
+        int i = em.createQuery(query).executeUpdate();
+        
+        return entity.getIdcall();
     }
 
     @PUT
