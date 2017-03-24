@@ -19,7 +19,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import lawrenum.CallingSession;
 import lawrenum.User;
+import lawrenum.HandleCall;
 
 /**
  *
@@ -120,16 +122,42 @@ public class UserFacadeREST extends AbstractFacade<User> {
     }
     
     @GET
-    @Path("exp")
-    public void exp(){
-        List<User> userList = em.createNamedQuery("User.findAll", User.class).getResultList();        
-        long msDiff;                
-        
-        for (User u : userList) {
-            u.setLastOnline(Calendar.getInstance().getTime());
-            super.edit(u);
+    @Path("beingCalled")
+    public int beingCalled(@QueryParam("iduser") int iduser){
+        User u = null;
+        try {
+            u = em.createNamedQuery("User.findByIduser", User.class).setParameter("iduser", iduser).getSingleResult();
+            if (u.getIsbeingcalled() == 1) {
+                String query = "SELECT c FROM CallingSession c WHERE c.idreceiver =" + iduser
+                        + " OR c.idcaller = "+iduser+" AND c.time IS NULL";
+                try {
+                    List<CallingSession> callList = em.createQuery(query).getResultList();
+                    for (CallingSession c : callList) {
+                        if (c.getIdcaller() == iduser) {
+                            return -1;
+                        } else {
+                            return c.getIdcall();
+                        }
+                    }
+                } catch (Exception ex) {                    
+                }
+            }
+        } catch (Exception ex) {            
         }
+        return 0;
     }
+    
+//    @GET
+//    @Path("exp")
+//    public void exp(){
+//        List<User> userList = em.createNamedQuery("User.findAll", User.class).getResultList();        
+//        long msDiff;                
+//        
+//        for (User u : userList) {
+//            u.setLastOnline(Calendar.getInstance().getTime());
+//            super.edit(u);
+//        }
+//    }
     
     @POST
     @Consumes({"application/json"})

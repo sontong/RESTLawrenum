@@ -44,17 +44,18 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
         return em.createNamedQuery("CallingSession.findAll", CallingSession.class).getResultList();
     }  
     
-    @GET
-    public int getCallStatus(@QueryParam("idcall") int idcall){        
-        String query =  "SELECT c FROM CallingSession c WHERE c.idcall="+idcall+
-                        " AND c.time IS NOT NULL";
-        try{
-            em.createQuery(query).getSingleResult();
-            return 1;
-        } catch(Exception ex){
-            return 0;
-        }
-    }
+//    @GET
+//    public int getCallStatus(@QueryParam("idcall") int idcall){        
+//        String query =  "SELECT c FROM CallingSession c WHERE c.idcall="+idcall+
+//                        " AND c.time IS NOT NULL";
+//        try{
+//            em.createQuery(query).getSingleResult();
+//            return 1;
+//        } catch(Exception ex){
+//            return 0;
+//        }
+//    }
+//        
     
     @GET
     @Path("acceptCall")
@@ -68,12 +69,12 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
         c.setTime(Calendar.getInstance().getTime());
         super.edit(c);
         
-//        String startCall = "UPDATE CallingSession c SET c.time = " + Calendar.getInstance().getTime()
-//                + " WHERE c.idcall="+idcall;
-//        int i = em.createQuery(startCall).executeUpdate();
-        
-        String changeUserStatus = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+c.getIdreceiver();
-        int ii = em.createQuery(changeUserStatus).executeUpdate();
+////        String startCall = "UPDATE CallingSession c SET c.time = " + Calendar.getInstance().getTime()
+////                + " WHERE c.idcall="+idcall;
+////        int i = em.createQuery(startCall).executeUpdate();
+//        
+//        String changeUserStatus = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+c.getIdreceiver();
+//        int ii = em.createQuery(changeUserStatus).executeUpdate();
     }
     
     @GET
@@ -90,7 +91,7 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
     }
     
     @GET 
-    @Path("stopCall")
+    @Path("cancelCall")
     public void stopCall(@QueryParam("idcall") int idcall){
         CallingSession c = null;
         try{
@@ -108,7 +109,7 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
         super.create(entity);
         em.flush();
         
-        String query = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+entity.getIdcaller();
+        String query = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser IN ("+entity.getIdcaller()+","+entity.getIdreceiver()+")";
         int i = em.createQuery(query).executeUpdate();
         
         return entity.getIdcall();
