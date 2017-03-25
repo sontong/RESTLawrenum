@@ -42,7 +42,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Path("getAllUsers")
     @Produces({"application/json"})
     public List<User> getAllUsers(){
-        return em.createNamedQuery("User.findAll", User.class).getResultList();
+        return em.createNamedQuery("User.findByType", User.class).setParameter("type", 1).getResultList();                
     }
     
     @GET
@@ -128,8 +128,10 @@ public class UserFacadeREST extends AbstractFacade<User> {
         try {
             u = em.createNamedQuery("User.findByIduser", User.class).setParameter("iduser", iduser).getSingleResult();
             if (u.getIsbeingcalled() == 1) {
+//                String query = "SELECT c FROM CallingSession c WHERE c.idreceiver =" + iduser
+//                        + " OR c.idcaller = "+iduser+" AND c.time IS NULL";
                 String query = "SELECT c FROM CallingSession c WHERE c.idreceiver =" + iduser
-                        + " OR c.idcaller = "+iduser+" AND c.time IS NULL";
+                        + " OR c.idcaller = " + iduser + " AND c.isOver = 0";
                 try {
                     List<CallingSession> callList = em.createQuery(query).getResultList();
                     for (CallingSession c : callList) {

@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CallingSession.findByIdnetwork", query = "SELECT c FROM CallingSession c WHERE c.idnetwork = :idnetwork"),
     @NamedQuery(name = "CallingSession.findByIdcaller", query = "SELECT c FROM CallingSession c WHERE c.idcaller = :idcaller"),
     @NamedQuery(name = "CallingSession.findByIdreceiver", query = "SELECT c FROM CallingSession c WHERE c.idreceiver = :idreceiver"),
-    @NamedQuery(name = "CallingSession.findByTime", query = "SELECT c FROM CallingSession c WHERE c.time = :time")})
+    @NamedQuery(name = "CallingSession.findByStartTime", query = "SELECT c FROM CallingSession c WHERE c.startTime = :startTime"),
+    @NamedQuery(name = "CallingSession.findByIsOver", query = "SELECT c FROM CallingSession c WHERE c.isOver = :isOver")})
 public class CallingSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,9 +50,11 @@ public class CallingSession implements Serializable {
     private Integer idcaller;
     @Column(name = "idreceiver")
     private Integer idreceiver;
-    @Column(name = "time")
+    @Column(name = "startTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date time;
+    private Date startTime;
+    @Column(name = "isOver")
+    private Integer isOver;
 
     public CallingSession() {
     }
@@ -92,12 +95,20 @@ public class CallingSession implements Serializable {
         this.idreceiver = idreceiver;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Integer getIsOver() {
+        return isOver;
+    }
+
+    public void setIsOver(Integer isOver) {
+        this.isOver = isOver;
     }
 
     @Override

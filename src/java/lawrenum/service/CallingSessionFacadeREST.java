@@ -5,7 +5,6 @@
  */
 package lawrenum.service;
 
-import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -44,18 +43,17 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
         return em.createNamedQuery("CallingSession.findAll", CallingSession.class).getResultList();
     }  
     
-//    @GET
-//    public int getCallStatus(@QueryParam("idcall") int idcall){        
-//        String query =  "SELECT c FROM CallingSession c WHERE c.idcall="+idcall+
-//                        " AND c.time IS NOT NULL";
-//        try{
-//            em.createQuery(query).getSingleResult();
-//            return 1;
-//        } catch(Exception ex){
-//            return 0;
-//        }
-//    }
-//        
+    @GET
+    public int getCallStatus(@QueryParam("idcall") int idcall){        
+        String query =  "SELECT c FROM CallingSession c WHERE c.idcall="+idcall+
+                        " AND c.time IS NOT NULL";
+        try{
+            em.createQuery(query).getSingleResult();
+            return 1;
+        } catch(Exception ex){
+            return 0;
+        }
+    }
     
     @GET
     @Path("acceptCall")
@@ -65,16 +63,16 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
             c = em.createNamedQuery("CallingSession.findByIdcall", CallingSession.class).setParameter("idcall", idcall).getSingleResult();
         } catch(Exception ex){
         }
-        
-        c.setTime(Calendar.getInstance().getTime());
+                
+        c.setStartTime(Calendar.getInstance().getTime());
         super.edit(c);
         
-////        String startCall = "UPDATE CallingSession c SET c.time = " + Calendar.getInstance().getTime()
-////                + " WHERE c.idcall="+idcall;
-////        int i = em.createQuery(startCall).executeUpdate();
-//        
-//        String changeUserStatus = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+c.getIdreceiver();
-//        int ii = em.createQuery(changeUserStatus).executeUpdate();
+//        String startCall = "UPDATE CallingSession c SET c.time = " + Calendar.getInstance().getTime()
+//                + " WHERE c.idcall="+idcall;
+//        int i = em.createQuery(startCall).executeUpdate();
+        
+        String changeUserStatus = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser = "+c.getIdreceiver();
+        int ii = em.createQuery(changeUserStatus).executeUpdate();
     }
     
     @GET
@@ -83,6 +81,8 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
         CallingSession c = null;
         try{
             c = em.createNamedQuery("CallingSession.findByIdcall", CallingSession.class).setParameter("idcall", idcall).getSingleResult();
+            c.setIsOver(1);
+            super.edit(c);
         } catch(Exception ex){
         }
         
@@ -91,7 +91,7 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
     }
     
     @GET 
-    @Path("cancelCall")
+    @Path("stopCall")
     public void stopCall(@QueryParam("idcall") int idcall){
         CallingSession c = null;
         try{
@@ -107,6 +107,7 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
     @Consumes({"application/json"})
     public int createCall(CallingSession entity) {                  
         super.create(entity);
+        entity.setIsOver(0);
         em.flush();
         
         String query = "UPDATE User u SET u.isbeingcalled = 1 WHERE u.iduser IN ("+entity.getIdcaller()+","+entity.getIdreceiver()+")";
