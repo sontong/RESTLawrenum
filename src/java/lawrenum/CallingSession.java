@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CallingSession.findByIdcaller", query = "SELECT c FROM CallingSession c WHERE c.idcaller = :idcaller"),
     @NamedQuery(name = "CallingSession.findByIdreceiver", query = "SELECT c FROM CallingSession c WHERE c.idreceiver = :idreceiver"),
     @NamedQuery(name = "CallingSession.findByStartTime", query = "SELECT c FROM CallingSession c WHERE c.startTime = :startTime"),
+    @NamedQuery(name = "CallingSession.findByStartInCallTime", query = "SELECT c FROM CallingSession c WHERE c.startInCallTime = :startInCallTime"),
     @NamedQuery(name = "CallingSession.findByIsOver", query = "SELECT c FROM CallingSession c WHERE c.isOver = :isOver")})
 public class CallingSession implements Serializable {
 
@@ -53,6 +54,9 @@ public class CallingSession implements Serializable {
     @Column(name = "startTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+    @Column(name = "startInCallTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startInCallTime;
     @Column(name = "isOver")
     private Integer isOver;
 
@@ -101,6 +105,14 @@ public class CallingSession implements Serializable {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
+    }
+
+    public Date getStartInCallTime() {
+        return startInCallTime;
+    }
+
+    public void setStartInCallTime(Date startInCallTime) {
+        this.startInCallTime = startInCallTime;
     }
 
     public Integer getIsOver() {

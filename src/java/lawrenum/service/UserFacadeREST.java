@@ -123,19 +123,26 @@ public class UserFacadeREST extends AbstractFacade<User> {
     
     @GET
     @Path("beingCalled")
-    public int beingCalled(@QueryParam("iduser") int iduser){
+    public int beingCalled(@QueryParam("iduser") int iduser){                       
         User u = null;
         try {
             u = em.createNamedQuery("User.findByIduser", User.class).setParameter("iduser", iduser).getSingleResult();
             if (u.getIsbeingcalled() == 1) {
-//                String query = "SELECT c FROM CallingSession c WHERE c.idreceiver =" + iduser
-//                        + " OR c.idcaller = "+iduser+" AND c.time IS NULL";
-                String query = "SELECT c FROM CallingSession c WHERE c.idreceiver =" + iduser
-                        + " OR c.idcaller = " + iduser + " AND c.isOver = 0";
+                String query = "SELECT c FROM CallingSession c WHERE c.isOver = 0 AND (c.idreceiver =" + iduser
+                        + " OR c.idcaller = " + iduser + ")";
                 try {
                     List<CallingSession> callList = em.createQuery(query).getResultList();
                     for (CallingSession c : callList) {
-                        if (c.getIdcaller() == iduser) {
+                        // Check if the call is over
+                        long msDiff = Calendar.getInstance().getTime().getTime() - c.getStartTime().getTime();
+                        if (msDiff > 1000 * 45) {
+                            String callOver = "UPDATE CallingSession c SET c.isOver = 1 WHERE c.idcall="+c.getIdcall();
+                            int i = em.createQuery(callOver).executeUpdate();
+                            
+                            String changeBeingCalled = "UPDATE User u SET u.isbeingcalled = 0 "
+                                    + "WHERE u.iduser IN ("+c.getIdcaller()+","+c.getIdreceiver()+")";
+                            int ii = em.createQuery(changeBeingCalled).executeUpdate();
+                        } else if (c.getIdcaller() == iduser) {
                             return -1;
                         } else {
                             return c.getIdcall();
@@ -146,6 +153,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
             }
         } catch (Exception ex) {            
         }
+        String changeBeingCalled = "UPDATE User u SET u.isbeingcalled = 0 "
+                                    + "WHERE u.iduser="+u.getIduser();
+        int i = em.createQuery(changeBeingCalled).executeUpdate();
         return 0;
     }
     
