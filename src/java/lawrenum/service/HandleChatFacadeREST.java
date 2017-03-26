@@ -38,8 +38,9 @@ public class HandleChatFacadeREST extends AbstractFacade<HandleChat> {
     @GET
     @Produces({"application/json"})
     public List<HandleChat> findMessage(@QueryParam("idsender") int idsender,@QueryParam("idreceiver") int idreceiver) {        
-        String query = "SELECT c FROM HandleChat c WHERE c.idsender = "+idsender+
-                " AND c.idreceiver = "+idreceiver;
+        String query = "SELECT c FROM HandleChat c WHERE (c.idsender = "+idsender+
+                " AND c.idreceiver = "+idreceiver+") OR (c.idsender = "+idreceiver+
+                " AND c.idreceiver = "+idsender+") ";
 //        try{
 //            return em.createQuery(query).getResultList();
 //        } catch(Exception ex){
