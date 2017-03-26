@@ -30,9 +30,11 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(lawrenum.service.CallingSessionFacadeREST.class);
+        resources.add(lawrenum.service.ChatFacadeREST.class);
         resources.add(lawrenum.service.CommentFacadeREST.class);
         resources.add(lawrenum.service.ForumFacadeREST.class);
         resources.add(lawrenum.service.HandleCallFacadeREST.class);
+        resources.add(lawrenum.service.HandleChatFacadeREST.class);
         resources.add(lawrenum.service.HandleCommentFacadeREST.class);
         resources.add(lawrenum.service.HandlePostFacadeREST.class);
         resources.add(lawrenum.service.MessageFacadeREST.class);
