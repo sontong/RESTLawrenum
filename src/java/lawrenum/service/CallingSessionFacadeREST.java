@@ -86,8 +86,12 @@ public class CallingSessionFacadeREST extends AbstractFacade<CallingSession> {
         } catch(Exception ex){
         }
         
-        String endCall = "UPDATE User u SET u.isbeingcalled = 0 WHERE u.iduser IN ("+c.getIdcaller()+","+c.getIdreceiver()+")";
+        try{
+            String endCall = "UPDATE User u SET u.isbeingcalled = 0 WHERE u.iduser IN ("+c.getIdcaller()+","+c.getIdreceiver()+")";
         int i = em.createQuery(endCall).executeUpdate();
+        } catch(Exception ex){
+            
+        }
     }
     
     @GET 

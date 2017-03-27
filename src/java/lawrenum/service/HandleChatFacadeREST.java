@@ -41,11 +41,7 @@ public class HandleChatFacadeREST extends AbstractFacade<HandleChat> {
         String query = "SELECT c FROM HandleChat c WHERE (c.idsender = "+idsender+
                 " AND c.idreceiver = "+idreceiver+") OR (c.idsender = "+idreceiver+
                 " AND c.idreceiver = "+idsender+") ";
-//        try{
-//            return em.createQuery(query).getResultList();
-//        } catch(Exception ex){
-//            return null;
-//        }
+        
         return em.createQuery(query).getResultList();
     }
 

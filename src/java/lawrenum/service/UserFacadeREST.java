@@ -136,12 +136,14 @@ public class UserFacadeREST extends AbstractFacade<User> {
                         // Check if the call is over
                         long msDiff = Calendar.getInstance().getTime().getTime() - c.getStartTime().getTime();
                         if (msDiff > 1000 * 45) {
-                            String callOver = "UPDATE CallingSession c SET c.isOver = 1 WHERE c.idcall="+c.getIdcall();
-                            int i = em.createQuery(callOver).executeUpdate();
-                            
-                            String changeBeingCalled = "UPDATE User u SET u.isbeingcalled = 0 "
-                                    + "WHERE u.iduser IN ("+c.getIdcaller()+","+c.getIdreceiver()+")";
-                            int ii = em.createQuery(changeBeingCalled).executeUpdate();
+//                            String callOver = "UPDATE CallingSession c SET c.isOver = 1 WHERE c.idcall="+c.getIdcall();
+//                            int i = em.createQuery(callOver).executeUpdate();
+//                            
+//                            String changeBeingCalled = "UPDATE User u SET u.isbeingcalled = 0 "
+//                                    + "WHERE u.iduser IN ("+c.getIdcaller()+","+c.getIdreceiver()+")";
+//                            int ii = em.createQuery(changeBeingCalled).executeUpdate();
+//                            
+//                            return 0;
                         } else if (c.getIdcaller() == iduser) {
                             return -1;
                         } else {
